@@ -19,8 +19,10 @@ function woocustom_add_product_to_cart()
 {
 
     // if (!is_user_logged_in()) return false;
-    var_dump(is_user_logged_in());
+
     $pedidos = numPedidos();
+
+    wc_print_notice("Número de pedidos: " . $pedidos, "notice");
 
     if ($pedidos > 4) {
         $product_id = 48; // Product Id of the free product which will get added to cart
