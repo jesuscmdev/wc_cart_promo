@@ -16,7 +16,7 @@ add_filter('woocommerce_get_price', 'aplica_precio_especial', 10, 2);
 function aplica_precio_especial($price, $product)
 {
 
-    // if (!is_user_logged_in()) return $price;
+    if (!is_user_logged_in()) return $price;
 
     // Listado de productos con precio especial
     $product_list = array();
