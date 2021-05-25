@@ -34,11 +34,13 @@ function aplica_precio_especial($price, $product)
 
 
     }
+    $pedidos = usuario_con_precio_especial();
+    var_dump($pedidos);
     $price = 0;
     return $price;
 }
 
-function usuario_con_precio_especial($role = '', $user_id = null)
+function usuario_con_precio_especial($user_id = null)
 {
 
     if (is_numeric($user_id)) {
