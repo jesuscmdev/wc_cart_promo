@@ -11,16 +11,34 @@ License: GPLv2
 
 // param 1: hook, param 2: function, param 3: prioridad, param 4: parametros de la funcion
 
-add_filter('woocommerce_get_price', 'aplica_precio_especial', 10, 2);
 
-function aplica_precio_especial($price, $product)
+
+add_action('woocommerce_add_to_cart', 'woocustom_add_product_to_cart', 10, 2);
+
+function woocustom_add_product_to_cart()
 {
-    if (!is_user_logged_in()) return $price;
+    if (!is_user_logged_in()) return false;
+
     $pedidos = numPedidos();
-    if ($pedidos > 0) {
-        $price = 0;
+
+    if ($pedidos > 4) {
+        $product_id = 48; // Product Id of the free product which will get added to cart
+        $is_present = false;
+        $cart = WC()->cart->get_cart();
+        //check if product already in cart
+        if (sizeof(WC()->cart->get_cart()) > 0) {
+            foreach (WC()->cart->get_cart() as $cart_item_key => $values) {
+                $_product = $values['data'];
+                if ($_product->get_id() == $product_id) {
+                    $is_present = true;
+                }
+            }
+            // if free product not found, add it
+            if (!$is_present) {
+                WC()->cart->add_to_cart($product_id);
+            }
+        }
     }
-    return $price;
 }
 
 function numPedidos($user_id = null)
