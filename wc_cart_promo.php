@@ -15,40 +15,22 @@ add_filter('woocommerce_get_price', 'aplica_precio_especial', 10, 2);
 
 function aplica_precio_especial($price, $product)
 {
-
     if (!is_user_logged_in()) return $price;
-
-    // Listado de productos con precio especial
-    $product_list = array();
-
     $pedidos = numPedidos();
-    var_dump($pedidos);
-    $price = 0;
+    if ($pedidos > 0) {
+        $price = 0;
+    }
     return $price;
 }
 
 function numPedidos($user_id = null)
 {
-
-    if (is_numeric($user_id)) {
-        $user = get_user_by('id', $user_id);
-    } else {
-        $user = wp_get_current_user();
-    }
-
-    if (empty($user)) {
-        return false;
-    }
-
     $orders = get_posts(apply_filters('woocommerce_my_account_my_orders_query', array(
         'numberposts' => -1,
         'meta_key' => '_customer_user',
-        // 'meta_value' => get_current_user_id(),
-        'meta_value' => $user,
+        'meta_value' => get_current_user_id(),
         'post_type' => wc_get_order_types('view-orders'),
         'post_status' => array_keys(wc_get_order_statuses())
     )));
-
-    // return in_array($role, (array) $user->roles);
-    return $orders;
+    return count($orders);
 }
