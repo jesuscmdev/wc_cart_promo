@@ -17,29 +17,30 @@ add_action('woocommerce_add_to_cart', 'woocustom_add_product_to_cart', 10, 2);
 
 function woocustom_add_product_to_cart()
 {
-
+    global $woocommerce;
     // if (!is_user_logged_in()) return false;
 
     $pedidos = numPedidos();
 
     wc_print_notice("Número de pedidos: " . $pedidos, "notice");
 
-    if ($pedidos > 4) {
-        $product_id = 48; // Product Id of the free product which will get added to cart
-        $is_present = false;
-        $cart = WC()->cart->get_cart();
+    if ($pedidos >= 4) {
+        $product_id = 48;
+        $found = false;
+
         //check if product already in cart
         if (sizeof(WC()->cart->get_cart()) > 0) {
             foreach (WC()->cart->get_cart() as $cart_item_key => $values) {
                 $_product = $values['data'];
-                if ($_product->get_id() == $product_id) {
-                    $is_present = true;
-                }
+                if ($_product->id == $product_id)
+                    $found = true;
             }
-            // if free product not found, add it
-            if (!$is_present) {
+            // if product not found, add it
+            if (!$found)
                 WC()->cart->add_to_cart($product_id);
-            }
+        } else {
+            // if no products in cart, add it
+            WC()->cart->add_to_cart($product_id);
         }
     }
 }
