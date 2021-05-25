@@ -52,10 +52,16 @@ function usuario_con_precio_especial($user_id = null)
     if (empty($user)) {
         return false;
     }
-    $args = array(
-        'customer_id' => $user
-    );
-    $orders = wc_get_orders($args);
+
+
+    $orders = get_posts(apply_filters('woocommerce_my_account_my_orders_query', array(
+        'numberposts' => -1,
+        'meta_key' => '_customer_user',
+        'meta_value' => get_current_user_id(),
+        'post_type' => wc_get_order_types('view-orders'),
+        'post_status' => array_keys(wc_get_order_statuses())
+    )));
+
 
 
     // return in_array($role, (array) $user->roles);
