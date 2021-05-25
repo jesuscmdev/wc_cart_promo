@@ -17,8 +17,9 @@ add_action('woocommerce_add_to_cart', 'woocustom_add_product_to_cart', 10, 2);
 
 function woocustom_add_product_to_cart()
 {
+    echo "<script>console.log(".is_user_logged_in().")</script>"
     if (!is_user_logged_in()) return false;
-
+    
     $pedidos = numPedidos();
 
     if ($pedidos > 4) {
