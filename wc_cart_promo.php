@@ -21,26 +21,13 @@ function aplica_precio_especial($price, $product)
     // Listado de productos con precio especial
     $product_list = array();
 
-    // % Descuento a aplicar
-    $discount = 10;
-
-    // Comprueba si el producto actual pertenece a la lista
-    if (in_array($product->id, $product_list) || empty($product_list)) {
-
-        // Comprueba si el usuario tiene precio especial
-        // if (usuario_con_precio_especial('cliente_vip')) {
-        //     $price = $price * (100 - $discount) / 100;
-        // }
-
-
-    }
-    $pedidos = usuario_con_precio_especial();
+    $pedidos = numPedidos();
     var_dump($pedidos);
     $price = 0;
     return $price;
 }
 
-function usuario_con_precio_especial($user_id = null)
+function numPedidos($user_id = null)
 {
 
     if (is_numeric($user_id)) {
@@ -53,16 +40,14 @@ function usuario_con_precio_especial($user_id = null)
         return false;
     }
 
-
     $orders = get_posts(apply_filters('woocommerce_my_account_my_orders_query', array(
         'numberposts' => -1,
         'meta_key' => '_customer_user',
-        'meta_value' => get_current_user_id(),
+        // 'meta_value' => get_current_user_id(),
+        'meta_value' => $user,
         'post_type' => wc_get_order_types('view-orders'),
         'post_status' => array_keys(wc_get_order_statuses())
     )));
-
-
 
     // return in_array($role, (array) $user->roles);
     return $orders;
