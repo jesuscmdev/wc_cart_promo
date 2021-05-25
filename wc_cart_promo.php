@@ -22,8 +22,6 @@ function woocustom_add_product_to_cart()
 
     $pedidos = numPedidos();
 
-    wc_print_notice("Número de pedidos: " . $pedidos, "notice");
-
     if ($pedidos >= 4) {
         $product_id = 48;
         $found = false;
